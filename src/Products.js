@@ -4,8 +4,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,24 +11,19 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import "./Products.css";
 import data from "./Data";
 import { useContext } from "react";
 import { UserContext } from "./MyContext";
+import "./Products.css";
+
 const Products = () => {
   const [open, setOpen] = React.useState(false);
   const [items, setitmes] = React.useState([]);
-  const [cate, setcategory] = React.useState();
-  const [rate, setrating] = React.useState();
-  const [src,setsrc]=React.useState();
+  const [src, setsrc] = React.useState();
   const obj = useContext(UserContext);
 
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   const handleClickOpen = (event) => {
-    console.log(event.target.id)
-    setsrc(event.target.id)
+    setsrc(event.target.id);
     setOpen(true);
   };
   const handleClose = () => {
@@ -49,6 +42,7 @@ const Products = () => {
       if (i.id === id) {
         flag = true;
       }
+      return null;
     });
     if (flag === true) {
       event1.style.display = "block";
@@ -60,6 +54,7 @@ const Products = () => {
           i.total = i.quantity * i.price;
           obj.setCartitems([...obj.cartItems]);
         }
+        return null;
       });
       const intervalID = setTimeout(() => {
         event1.innerHTML = "Add to Cart";
@@ -80,6 +75,7 @@ const Products = () => {
           }, 400);
           return () => clearInterval(intervalID);
         }
+        return null;
       });
     }
   };
@@ -95,14 +91,14 @@ const Products = () => {
         temp.push(i);
         setitmes(temp);
       }
+      return null;
     });
   };
 
   // Search by Low-High-Rating
   const selectbylowhighrating = (event) => {
-    console.log(items)
+    console.log(items);
     let text = event.target.value;
-    setrating(text)
     if (text === "low") {
       var low = data.sort(function (a, b) {
         return a.price - b.price;
@@ -124,7 +120,6 @@ const Products = () => {
   // Select from Category
   const selectfromcategory = (event) => {
     let category = event.target.value;
-    setcategory(category)
     var temp = [];
     if (category !== "all") {
       data.map((i) => {
@@ -133,6 +128,7 @@ const Products = () => {
           temp.push(i);
           setitmes(temp);
         }
+        return null;
       });
     } else {
       setitmes(data);
@@ -148,7 +144,7 @@ const Products = () => {
         <FormControl variant="standard" sx={{ minWidth: 250 }}>
           <InputLabel
             id="demo-simple-select-standard-label"
-            sx={{ fontWeight: "bold", color: "#411508", fontSize: "2vw"}}
+            sx={{ fontWeight: "bold", color: "#411508", fontSize: "2vw" }}
           >
             Select from Category
           </InputLabel>
@@ -178,7 +174,7 @@ const Products = () => {
             id="demo-simple-select-standard"
             onChange={selectbylowhighrating}
             label="Category"
-            sx={{fontWeight:"bold"}}
+            sx={{ fontWeight: "bold" }}
           >
             <MenuItem value={"low"}>Price : Low to High</MenuItem>
             <MenuItem value={"high"}>Price : High to Low</MenuItem>
@@ -194,7 +190,13 @@ const Products = () => {
         />
         <div style={{ marginTop: "2vh" }}>
           <Button onClick={handleClickOpen1}>
-            <Badge id="bg" badgeContent={obj.cartItems.length} color="primary" sx={{fontSize:"4vh"}} style={{fontSize:"20px",padding:"4%"}}>
+            <Badge
+              id="bg"
+              badgeContent={obj.cartItems.length}
+              color="primary"
+              sx={{ fontSize: "4vh" }}
+              style={{ fontSize: "20px", padding: "4%" }}
+            >
               <ShoppingCartOutlinedIcon
                 sx={{ fontSize: "5vh", color: "#411508" }}
                 onClick={handleClickOpen1}
@@ -207,49 +209,58 @@ const Products = () => {
       <div className="CardDiv">
         {items.map((i, index) => {
           return (
-            <>
-              <div class="card">
-                <div className="veg_logo">
-                  <img src="./sweets/veg.jpg" alt="veg" />
-                </div>
-                <img src={i.image} alt="Avatar" className="img" id="myImg"/>
-                <div class="container">
-                  <h4 className="product_rating">
-                    <span className="name_span" style={{fontSize:"2vh"}}>
-                      <b>{i.name}</b>
-                    </span>
-                    <span className="star_rating">
-                      {Array(i.rating)
-                        .fill()
-                        .map(() => (
-                          <i
-                            className="fa-solid fa-star"
-                            style={{ color: "#FFA41C" }}
-                          ></i>
-                        ))}
-                    </span>
-                  </h4>
-                  <p className="add_div" style={{fontSize:"2vh"}}>
-                    {" "}
-                    &#8377;{i.price} / Kg
-                    <del>
-                      <sub> &#8377;{i.discount_price} / Kg</sub>
-                    </del>
-                    <span>
-                      <Button>
-                        <i class="fa fa-eye" aria-hidden="true" onClick={handleClickOpen} id={i.image} style={{fontSize:"2vh"}}></i>
-                      </Button>
-                    </span>
-                  </p>
-                  <div className="add_div">
-                    <span class="loader" style={{ display: "none" }}></span>
-                    <span className="add_to_cart" id={i.id} onClick={addToCart} style={{fontSize:"2vh"}}>
-                      Add to Cart
-                    </span>
-                  </div>
+            <div class="card">
+              <div className="veg_logo">
+                <img src="./sweets/veg.jpg" alt="veg" />
+              </div>
+              <img src={i.image} alt="Avatar" className="img" id="myImg" />
+              <div class="container">
+                <h4 className="product_rating">
+                  <span className="name_span" style={{ fontSize: "2vh" }}>
+                    <b>{i.name}</b>
+                  </span>
+                  <span className="star_rating">
+                    {Array(i.rating)
+                      .fill()
+                      .map(() => (
+                        <i
+                          className="fa-solid fa-star"
+                          style={{ color: "#FFA41C" }}
+                        ></i>
+                      ))}
+                  </span>
+                </h4>
+                <p className="add_div" style={{ fontSize: "2vh" }}>
+                  {" "}
+                  &#8377;{i.price} / Kg
+                  <del>
+                    <sub> &#8377;{i.discount_price} / Kg</sub>
+                  </del>
+                  <span>
+                    <Button>
+                      <i
+                        class="fa fa-eye"
+                        aria-hidden="true"
+                        onClick={handleClickOpen}
+                        id={i.image}
+                        style={{ fontSize: "2vh" }}
+                      ></i>
+                    </Button>
+                  </span>
+                </p>
+                <div className="add_div">
+                  <span class="loader" style={{ display: "none" }}></span>
+                  <span
+                    className="add_to_cart"
+                    id={i.id}
+                    onClick={addToCart}
+                    style={{ fontSize: "2vh" }}
+                  >
+                    Add to Cart
+                  </span>
                 </div>
               </div>
-            </>
+            </div>
           );
         })}
       </div>
@@ -257,7 +268,7 @@ const Products = () => {
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
-        sx={{width:"100vw"}}
+        sx={{ width: "100vw" }}
       >
         <DialogContent>
           <DialogContentText>
@@ -265,8 +276,12 @@ const Products = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus sx={{fontSize:"2vh",fontWeight:"bold"}}>
-           X Close
+          <Button
+            onClick={handleClose}
+            autoFocus
+            sx={{ fontSize: "2vh", fontWeight: "bold" }}
+          >
+            X Close
           </Button>
         </DialogActions>
       </Dialog>
