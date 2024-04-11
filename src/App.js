@@ -1,18 +1,15 @@
-import './App.css';
-import Header from './Header';
-import Offers from './Offers';
-import Products from './Products';
-import {Routes,Route} from "react-router-dom";
+import Header from "./Header";
+import Offers from "./Offers";
+import Products from "./Products";
+import "./App.css";
 
 function App() {
   return (
     <>
-    <Header/>
-    <Offers/>
-    <Products/>
+      <Header />
+      <Offers />
+      <Products />
     </>
   );
 }
 export default App;
-
-

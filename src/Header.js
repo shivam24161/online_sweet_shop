@@ -2,15 +2,10 @@ import * as React from "react";
 import "./Header.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
-import { Alert, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -68,17 +63,16 @@ const Header = () => {
   const [idd, setidd] = React.useState(0);
   const [name1, setname1] = React.useState();
   const [email1, setemail1] = React.useState();
-  const [mobile1, setmobile1] = React.useState();
   const [openorder, setOpenorder] = React.useState(false);
   const [flag, setflag] = React.useState("none");
-  const [disabled,setdisabled]=React.useState(false)
+  const [disabled, setdisabled] = React.useState(false);
   const [totalAmount, settotalAmount] = React.useState(0);
-  const [errortext,seterrortext]=React.useState();
+  const [errortext, seterrortext] = React.useState();
 
   const handleCloseorder = () => {
     setOpenorder(false);
     setopenerror(false);
-  }
+  };
   // Empty cart popover
   const openempty = Boolean(anchorEl1);
   const handleClickEmpty = (event) => {
@@ -131,7 +125,7 @@ const Header = () => {
     if (code === obj.coupon) {
       settotalAmount((totalAmount * 50) / 100);
       setflag("block");
-      setdisabled(true)
+      setdisabled(true);
       span.innerHTML = "Coupon Applied successfullly";
     } else {
       setflag("block");
@@ -149,6 +143,7 @@ const Header = () => {
         i.total = i.quantity * i.price;
         obj.setCartitems([...items]);
       }
+      return null;
     });
     setAnchorEl(null);
   };
@@ -156,8 +151,9 @@ const Header = () => {
   // Empty cart
   const emptyCart = () => {
     obj.cartItems.map((i) => {
-        i.quantity = 1;
-        obj.setCartitems([]);
+      i.quantity = 1;
+      obj.setCartitems([]);
+      return null;
     });
     setAnchorEl1(null);
   };
@@ -172,6 +168,7 @@ const Header = () => {
           obj.setCartitems([...obj.cartItems]);
         }
       }
+      return null;
     });
   };
 
@@ -183,6 +180,7 @@ const Header = () => {
         i.total = i.quantity * i.price;
         obj.setCartitems([...obj.cartItems]);
       }
+      return null;
     });
   };
 
@@ -208,41 +206,22 @@ const Header = () => {
     let e = email.current.firstChild.nextElementSibling.firstChild.value;
     let m = mobile.current.firstChild.nextElementSibling.firstChild.value;
     let a = address.current.value;
-    var filter =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (n === "" || e === "" || a === "" || m === "") {
-    
       seterrortext("All fields are mandatory!, Please provide input");
       setopenerror(true);
-    }
-    else if(!isNaN(n))
-    {
-     
+    } else if (!isNaN(n)) {
       seterrortext("Please enter valid name!");
       setopenerror(true);
-    } 
-    else if (!filter.test(e)) {
-      alert("Please provide a valid email address!");
-      seterrortext("Please provide a valid email address!");
-      setopenerror(true);
-    }
-    else if(!isNaN(a))
-    {
-    
+    } else if (!isNaN(a)) {
       seterrortext("Please enter valid address");
       setopenerror(true);
-    }
-    else if(a.length < 8)
-    {
-      
+    } else if (a.length < 8) {
       seterrortext("Address should be of minimum 8 characters");
       setopenerror(true);
-    }
-    else {
+    } else {
       setemail1(e);
       setname1(n);
-      setmobile1(m);
       setOpenorder(true);
       setopenCheck(false);
       obj.setOpen(false);
@@ -341,14 +320,22 @@ const Header = () => {
             </AppBar>
             {obj.cartItems.length === 0 ? (
               <>
-                <div style={{ marginLeft: "55vh"}}>
+                <div style={{ marginLeft: "55vh" }}>
                   <img
                     src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/110cdeba-5d07-4fe8-bc0d-91f2001e110f/decdgm2-ecc9b0c0-c8f1-4c30-b1ff-1d31e6dcf94c.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzExMGNkZWJhLTVkMDctNGZlOC1iYzBkLTkxZjIwMDFlMTEwZlwvZGVjZGdtMi1lY2M5YjBjMC1jOGYxLTRjMzAtYjFmZi0xZDMxZTZkY2Y5NGMuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.aJfS2IOjJjjYv9iSctlbLOdqvjhcllGsSzLdbUqnGqI"
                     alt="Avatar"
-                    style={{ width:"40vw" }}
+                    style={{ width: "40vw" }}
                   />
-                  
-                </div><h1 style={{textAlign:"center",color:"#F89703",fontSize:"4vh"}}><i>Your Cart is Empty..</i></h1>
+                </div>
+                <h1
+                  style={{
+                    textAlign: "center",
+                    color: "#F89703",
+                    fontSize: "4vh",
+                  }}
+                >
+                  <i>Your Cart is Empty..</i>
+                </h1>
               </>
             ) : (
               <List>
@@ -389,86 +376,80 @@ const Header = () => {
                       {obj.cartItems.map((row, index) => {
                         var a = row.id;
                         return (
-                          <>
-                            <TableRow
-                              key={row.name}
-                              sx={{
-                                "&:last-child td, &:last-child th": {
-                                  border: 0,
-                                },
-                              }}
-                              ref={iddel}
-                              id={row.id}
+                          <TableRow
+                            key={row.name}
+                            sx={{
+                              "&:last-child td, &:last-child th": {
+                                border: 0,
+                              },
+                            }}
+                            ref={iddel}
+                            id={row.id}
+                          >
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              sx={{ fontSize: "2vh" }}
                             >
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                sx={{ fontSize: "2vh" }}
+                              {index + 1}
+                            </TableCell>
+                            <TableCell>
+                              <img
+                                src={row.image}
+                                alt="img"
+                                style={{ width: "10vh" }}
+                              />
+                            </TableCell>
+                            <TableCell sx={{ fontSize: "2vh" }}>
+                              {row.name}
+                            </TableCell>
+                            <TableCell sx={{ fontSize: "2vh" }}>
+                              &#8377; {row.price}
+                            </TableCell>
+                            <TableCell sx={{ fontSize: "2vh" }}>
+                              <Button onClick={() => decreaseQuantity(row.id)}>
+                                <RemoveIcon />
+                              </Button>
+                              {row.quantity}
+                              <Button onClick={() => increaseQuantity(row.id)}>
+                                <AddIcon />
+                              </Button>
+                            </TableCell>
+                            <TableCell sx={{ fontSize: "2vh" }}>
+                              &#8377; {row.total}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                aria-describedby={id}
+                                onClick={handleClickDel}
+                                id={a}
                               >
-                                {index + 1}
-                              </TableCell>
-                              <TableCell>
-                                <img
-                                  src={row.image}
-                                  alt="img"
-                                  style={{ width: "10vh" }}
-                                />
-                              </TableCell>
-                              <TableCell sx={{ fontSize: "2vh" }}>
-                                {row.name}
-                              </TableCell>
-                              <TableCell sx={{ fontSize: "2vh" }}>
-                                &#8377; {row.price}
-                              </TableCell>
-                              <TableCell sx={{ fontSize: "2vh" }}>
+                                <DeleteIcon id={a} />
+                              </Button>
+                              {/* Delete single items */}
+                              <Popover
+                                open={opendel}
+                                anchorEl={anchorEl}
+                                onClose={handleCloseDel}
+                                anchorOrigin={{
+                                  vertical: "bottom",
+                                }}
+                              >
                                 <Button
-                                  onClick={() => decreaseQuantity(row.id)}
+                                  onClick={deleteItems}
+                                  sx={{ fontSize: "2vh" }}
                                 >
-                                  <RemoveIcon />
+                                  Delete
                                 </Button>
-                                {row.quantity}
                                 <Button
-                                  onClick={() => increaseQuantity(row.id)}
+                                  onClick={handleCloseDel}
+                                  sx={{ fontSize: "2vh" }}
                                 >
-                                  <AddIcon />
+                                  Cancel
                                 </Button>
-                              </TableCell>
-                              <TableCell sx={{ fontSize: "2vh" }}>
-                                &#8377; {row.total}
-                              </TableCell>
-                              <TableCell>
-                                <Button
-                                  aria-describedby={id}
-                                  onClick={handleClickDel}
-                                  id={a}
-                                >
-                                  <DeleteIcon id={a} />
-                                </Button>
-                                {/* Delete single items */}
-                                <Popover
-                                  open={opendel}
-                                  anchorEl={anchorEl}
-                                  onClose={handleCloseDel}
-                                  anchorOrigin={{
-                                    vertical: "bottom",
-                                  }}
-                                >
-                                  <Button
-                                    onClick={deleteItems}
-                                    sx={{ fontSize: "2vh" }}
-                                  >
-                                    Delete
-                                  </Button>
-                                  <Button
-                                    onClick={handleCloseDel}
-                                    sx={{ fontSize: "2vh" }}
-                                  >
-                                    Cancel
-                                  </Button>
-                                </Popover>
-                              </TableCell>
-                            </TableRow>
-                          </>
+                              </Popover>
+                            </TableCell>
+                          </TableRow>
                         );
                       })}
                     </TableBody>
@@ -751,7 +732,7 @@ const Header = () => {
             component="h2"
             sx={{ fontSize: "2vh" }}
           >
-            <h2 style={{textDecoration:"underline"}}>Order Confirmation:</h2>
+            <h2 style={{ textDecoration: "underline" }}>Order Confirmation:</h2>
           </Typography>
           <Typography
             id="modal-modal-description"
